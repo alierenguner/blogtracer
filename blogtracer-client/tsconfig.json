@@ -1,0 +1,37 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "jsx": "react",
+        "moduleResolution": "Node",
+        "rootDir": "src",
+        "baseUrl": ".",
+        "paths": {
+            "@containers/*": ["./src/pages/containers*"],
+            "@common-components/*": ["./src/components/_common/*"],
+            "@components/*": ["./src/components/*"],
+            "@styles/*": ["./src/sass/*"],
+            "@/*": ["./src/*"]
+        },
+        "allowJs": true,
+        "lib": [
+            "ES6",
+            "DOM",
+            "DOM.Iterable",
+            "ESNext"
+        ],
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "strictNullChecks": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "strict": true,
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

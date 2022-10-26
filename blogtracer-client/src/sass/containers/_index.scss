@@ -1,0 +1,6 @@
+@import './content-container';
+
+main > .container {
+    padding: 10px 20px;
+    height: calc(100% - 40px);
+}

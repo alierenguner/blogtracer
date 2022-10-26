@@ -1,0 +1,16 @@
+.auth-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+
+    .slider {
+        flex: 3;
+        height: 100%;
+    }
+
+    .outlet {
+        flex: 2;
+    }
+}

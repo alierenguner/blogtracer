@@ -1,0 +1,59 @@
+.content-author {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 20px;
+    padding-left: 20px;
+    width: 280px;
+    height: 100%;
+    min-width: 280px;
+    border-left: 1px solid #00000015;
+
+    .author {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        line-height: 1.4em;
+        text-align: center;
+
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 100%;
+        }
+
+        .name {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+        .follow-button {
+            margin: 5px;
+            padding: 5px 20px;
+            background-color: #0000000d;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 0.85;
+            }
+        }
+    }
+
+    .content-details {
+        margin-top: 20px;
+        display: flex;
+        
+        .detail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 10px;
+        }
+    }
+}

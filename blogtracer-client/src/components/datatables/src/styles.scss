@@ -1,0 +1,35 @@
+.follow-list {
+    margin: 20px;
+
+    img {
+        width: 60px;
+        border-radius: 100%;
+    }
+}
+
+.datatable {
+    width: 100%;
+    text-align: center;
+    table-layout: fixed;
+    border-collapse: collapse;
+    
+    thead {
+        tr {
+            font-size: 14px;
+            height: 50px;
+        }
+    }
+
+    button {
+        padding: 10px 30px;
+        background-color: #EFEFEF;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.85;
+        }
+    }
+}
