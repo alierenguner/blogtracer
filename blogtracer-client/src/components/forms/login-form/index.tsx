@@ -1,4 +1,5 @@
 import authenticationApiService from '@/services/authentication/api-service';
+import Input from '@common-components/input';
 import React from 'react';
 
 const LoginForm = () => {
@@ -11,11 +12,8 @@ const LoginForm = () => {
 
     return (
         <form className="login-form" onSubmit={(e) => e.preventDefault()}>
-            <label htmlFor="login-id">ID</label>
-            <input type="text" id="login-id" />
-            
-            <label htmlFor="login-password">Password</label>
-            <input type="password" id="login-password" />
+            <Input title="ID" input={{ className: 'p-input' }} />
+            <Input title="Password" input={{ className: 'p-input', type: 'password' }} />
             
             <button type="submit" onClick={handleSubmit}>Login</button>
             <button type="button">Register</button>
