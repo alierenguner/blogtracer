@@ -1,6 +1,6 @@
 import { ILoginInputDto, IRegisterInputDto } from "@/api/provider";
-import IValidation from "@/shared/app/interfaces/validation-interface";
-import userValidationHelper from "@/shared/user/helpers/validation-helper";
+import { IValidation } from "@/shared/global/interfaces";
+import userValidationHelper from "@/shared/user/helpers/user-validation-helper";
 
 class AuthenticationValidator {
     public validateLogin = (input: ILoginInputDto) => {

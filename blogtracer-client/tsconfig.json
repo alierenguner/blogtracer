@@ -6,7 +6,7 @@
         "rootDir": "src",
         "baseUrl": ".",
         "paths": {
-            "react-dom": ["@hot-loader/react-dom"],
+            "@shared*": ["./src/shared*"],
             "@containers/*": ["./src/pages/containers*"],
             "@common-components/*": ["./src/components/_common/*"],
             "@components/*": ["./src/components/*"],

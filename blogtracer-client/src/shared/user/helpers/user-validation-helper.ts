@@ -1,6 +1,5 @@
-import constants from "@/shared/app/constants/global";
-import IValidation from "@/shared/app/interfaces/validation-interface";
-
+import constants from "@/shared/global/constants";
+import { IValidation } from "@/shared/global/interfaces";
 class UserValidationHelper {
     /** Description: Validates the name input. */
     public validateName = (name: string, refResult: IValidation) => {
