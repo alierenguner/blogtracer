@@ -34,6 +34,7 @@ const AsideMenu = () => {
                 <i className="far fa-th-large"></i>
                 <span>Show All</span>
             </li>
+
         </ul>
     )
 }

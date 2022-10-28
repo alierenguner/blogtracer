@@ -7,21 +7,31 @@ interface IProps {
 }
 
 const Input = (props: IProps) => {
+    const [isActive, setIsActive] = React.useState<boolean>(false);
     const useValue = React.useState<string>('');  
     const value: string = props.input?.value as string || useValue[0];
     const setValue = props.input?.onChange || useValue[1];
 
     const inputRef = React.createRef<HTMLInputElement>();
 
-    const handleLabelClick = () => {
+    const handleInputClick = () => {
         inputRef.current?.focus();
     }
 
-    
+    const changeIsActive = () => {
+        if (value.length | (document.activeElement === inputRef.current) as any) {
+            setIsActive(true);
+        } else {
+            setIsActive(false);
+        }
+    }
+
+    React.useEffect(changeIsActive, [value])
+
     return (    
-        <div className={"app-input" + (value.length?' filled':'')} >
-            <label onClick={handleLabelClick} {...props.label}>{props.title}</label>
-            <input value={value} onChange={(e) => setValue(e.currentTarget.value as any)} ref={inputRef} {...props.input}/>
+        <div className={"app-input" + (isActive?' active':'')} onClick={handleInputClick} >
+            <label {...props.label}>{props.title}</label>
+            <input onFocus={changeIsActive} onBlur={changeIsActive} value={value} onChange={(e) => setValue(e.currentTarget.value as any)} ref={inputRef} {...props.input}/>
         </div>
     )
 }

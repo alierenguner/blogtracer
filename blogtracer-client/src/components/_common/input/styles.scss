@@ -1,4 +1,6 @@
 .app-input {
+    cursor: text;
+
     label {
         position: absolute;
         margin-top: 16px;
@@ -8,6 +10,7 @@
         -o-transition: all 0.2s ease;
         -moz-transition: all 0.2s ease;
         -webkit-transition: all 0.2s ease;
+        cursor: text;
     }
 
     input {
@@ -15,7 +18,7 @@
         padding-left: 8px;
     }
 
-    &.filled {
+    &.active {
         label {
             opacity: 0.6;
             margin-top: 9px;
