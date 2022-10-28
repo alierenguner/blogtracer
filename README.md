@@ -1,1 +1,2 @@
-# blogtracer
+# Blogtracer
+**Blogtracer** is one of the open-source social content platforms where people share own thoughts in the cyber world. **Blogtracer** aims for users to discover the content of content writers and provides interaction between users.
