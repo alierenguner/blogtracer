@@ -11,7 +11,16 @@
     }
 
     .body {
-        margin: 20px;
+        margin: 20px 30px;
         text-align: center;
+    }
+
+    .action-buttons {
+        margin: 20px 30px 10px;
+        display: flex;
+
+        & > button {
+            margin: 0 2px
+        }
     }
 }

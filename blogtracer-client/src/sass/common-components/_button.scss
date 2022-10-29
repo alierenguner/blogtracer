@@ -1,0 +1,46 @@
+.p-button {
+    background-color: #0f6aff;
+    color: #FBFBFB;
+    font: inherit;
+    font-size: 14px;
+    border: 1px solid #0f6aff;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.95;
+    }
+}
+
+.s-button {
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.05);
+    font-family: inherit;
+    font-size: 14px;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    
+    &:hover {
+        opacity: 0.85;
+    }
+}
+
+.t-button {
+    color: #0f6aff;
+    background-color: transparent;
+    font: inherit;
+    font-size: 14px;
+    border: 1px solid #0f6aff;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+    
+    &:hover {
+        color: #FBFBFB;
+        background-color: #0f6aff;
+        opacity: 0.95;
+    }
+}

@@ -10,8 +10,8 @@ const RegisterForm = () => {
             <Input title="Password" input={{ className: 'p-input', type: 'password' }} />
             <Input title="Confirm Password" input={{ className: 'p-input', type: 'password' }} />
 
-            <button type="submit">Login</button>
-            <button type="button">Register</button>
+            <button type="submit" className="p-button">Register</button>
+            <button type="button" className="t-button">Login</button>
         </form>
     )
 }

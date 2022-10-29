@@ -15,8 +15,8 @@ const LoginForm = () => {
             <Input title="ID" input={{ className: 'p-input' }} />
             <Input title="Password" input={{ className: 'p-input', type: 'password' }} />
             
-            <button type="submit" onClick={handleSubmit}>Login</button>
-            <button type="button">Register</button>
+            <button type="submit" className="p-button" onClick={handleSubmit}>Login</button>
+            <button type="button" className="t-button">Register</button>
         </form>
     )
 }
