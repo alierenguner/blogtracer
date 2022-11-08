@@ -4,7 +4,6 @@ import { Request, Response } from "express";
 import { Controller, Delete, Get, Post } from "@base/decorators";
 
 export interface IUserController extends IController {
-    create: (request: Request, response: Response) => any
     update: (request: Request, response: Response) => any
     delete: (request: Request, response: Response) => any
     findAll: (request: Request, response: Response) => any
@@ -17,11 +16,6 @@ class UserController implements IUserController {
     
     constructor(dependencies: IControllerDependencies) {
         this._service = dependencies.services.user;
-    }
-
-    @Post('')
-    create(request: Request, response: Response) {
-
     }
 
     @Post('/:userId')

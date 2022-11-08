@@ -55,7 +55,7 @@ class AuthenticationRepository {
             .then(() => {
                 result = true;
             })
-            .catch((error) => {
+            .catch((error) => { 
                 // error?.original?.code = "ER_DUP_ENTRY"
             });
 
