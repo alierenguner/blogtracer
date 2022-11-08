@@ -1,11 +1,10 @@
 import jwt from 'jsonwebtoken';
-import Roles from '@base/shared/roles';
 import fs from 'fs';
 import TokenPayloadDto from '@base/dtos/TokenPayloadDto';
-import AuthorizationSignInputDto from '@base/dtos/AuthorizationSignInputDto';
+import { IAuthorizationTokenInput } from '@base/dtos/AuthorizationDtos';
 
 class AuthorizationHelper {
-    public sign = async (input: AuthorizationSignInputDto): Promise<string> => {
+    public sign = async (input: IAuthorizationTokenInput): Promise<string> => {
         return new Promise(async (resolve, reject) => {
             // token payload
             const payload: TokenPayloadDto = {

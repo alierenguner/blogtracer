@@ -12,7 +12,7 @@ import AuthenticationManager from '@base/managers/authentication-manager';
 class AuthenticationService implements IService {
     private _repository;
     private _manager;
-    
+
     constructor(dependencies: IServiceDependencies) {
         this._repository = dependencies.repositories.authentication;
         this._manager = new AuthenticationManager();
@@ -21,21 +21,22 @@ class AuthenticationService implements IService {
     public login = async (request: Request, response: Response) => {
         const responseMessage = new ResponseMessage(response);
         let result: AuthenticationLoginOutputDto | null = null;
+
         const bodyParams = request.body;
 
-        const input: AuthenticationLoginInputDto = {
+        const inputDto: AuthenticationLoginInputDto = {
             loginId: bodyParams.loginId,
             password: bodyParams.password
         }
 
-        const inputValidation = this._manager.login(input);
+        const inputValidation = this._manager.login(inputDto);
         if (inputValidation.isValid) {
-            const loginData = await this._repository.login(input);
+            const loginData = await this._repository.login(inputDto);
             if (loginData) {
                 const { id, name, username, email } = loginData;
 
                 // generate an access token
-                const accessToken = await authorizationHelper.sign({ 
+                const accessToken = await authorizationHelper.sign({
                     id,
                     username,
                     email,
@@ -90,7 +91,7 @@ class AuthenticationService implements IService {
                     message: 'Something went wrong.'
                 })
             }
-            
+
         } else {
             responseMessage.error({
                 message: inputValidation.message

@@ -24,7 +24,7 @@ class AuthenticationRepository {
     public login = async (input: AuthenticationLoginInputDto): Promise<AuthenticationLoginOutput> => {
         let result: AuthenticationLoginOutput = null;
 
-        const user = await this._model.findOne({ 
+        const user = await this._model.findOne({
             where: Sequelize.and(
                 { password: input.password },
                 Sequelize.or(
@@ -51,10 +51,13 @@ class AuthenticationRepository {
     public register = async (input: AuthenticationRegisterInputDto): Promise<boolean> => {
         let result = false;
 
-        const isSuccess = await this._model.create(input);
-        if (isSuccess) {
-            result = true;
-        }
+        await this._model.create(input)
+            .then(() => {
+                result = true;
+            })
+            .catch((error) => {
+                // error?.original?.code = "ER_DUP_ENTRY"
+            });
 
         return result;
     }

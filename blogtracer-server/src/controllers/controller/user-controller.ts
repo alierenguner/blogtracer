@@ -1,31 +1,47 @@
 import { IController } from "@base/shared/global";
 import { IControllerDependencies } from "../interfaces";
 import { Request, Response } from "express";
+import { Controller, Delete, Get, Post } from "@base/decorators";
 
 export interface IUserController extends IController {
-    create: (req: Request, res: Response) => any
-    update: (req: Request, res: Response) => any
-    delete: (req: Request, res: Response) => any
-    findAll: (req: Request, res: Response) => any
-    findOne: (req: Request, res: Response) => any
+    create: (request: Request, response: Response) => any
+    update: (request: Request, response: Response) => any
+    delete: (request: Request, response: Response) => any
+    findAll: (request: Request, response: Response) => any
+    findOne: (request: Request, response: Response) => any
 }
 
+@Controller('/users')
 class UserController implements IUserController {
-    // Methods
-    public readonly create;
-    public readonly update;
-    public readonly delete;
-    public readonly findAll;
-    public readonly findOne;
+    private readonly _service;
     
     constructor(dependencies: IControllerDependencies) {
-        const service = dependencies.services.user;
+        this._service = dependencies.services.user;
+    }
 
-        this.create = service.create; 
-        this.update = service.update; 
-        this.delete = service.delete; 
-        this.findAll = service.findAll; 
-        this.findOne = service.findOne; 
+    @Post('')
+    create(request: Request, response: Response) {
+
+    }
+
+    @Post('/:userId')
+    update(request: Request, response: Response) {
+
+    }
+
+    @Delete('/:userId')
+    delete(request: Request, response: Response) {
+        
+    }
+    
+    @Get('')
+    findAll(request: Request, response: Response) {
+
+    }
+
+    @Get('/:userId')
+    findOne(request: Request, response: Response) {
+
     }
 }
 
