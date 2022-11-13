@@ -15,18 +15,13 @@ class Router implements IRouter {
     public defineRoutes = () => {
         try {
             const controllers = this.getControllers();
-            const routers: any = {
-                'get': this._app.get,
-                'post': this._app.post,
-                'delete': this._app.delete,
-            }
     
             Object.keys(appRoutes).forEach(appRouteKey => {
                 const routes = appRoutes[appRouteKey];
     
                 routes.forEach((route: any) => {
                     const { callbackMethod, callbackClass, requestMethod, requestUrl } = route;
-    
+
                     const callback = controllers[callbackClass][callbackMethod];
                     
                     if (requestMethod === 'get') {

@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import { IController } from "@base/shared/global";
 import { IControllerDependencies } from "../interfaces";
-import { Controller, Post } from '@base/decorators';
+import {  Authorize, Controller, Post } from '@base/decorators';
+import Permissions from '@base/libs/authorization/permissions';
+import bindContextToMethods from '@base/utils/bindContextToMethods';
 
 export interface IAuthController extends IController {
     token: (request: Request, response: Response) => any
@@ -15,21 +17,29 @@ class AuthController implements IAuthController {
     private readonly _authenticationService;
 
     constructor(dependencies: IControllerDependencies) {
+        bindContextToMethods(this);  
+
         this._authorizationService = dependencies.services.authorization;
         this._authenticationService = dependencies.services.authentication;
     }
 
     @Post()
-    token = async (request: Request, response: Response) =>
+    @Authorize(Permissions.AUTH_TOKEN)
+    token(request: Request, response: Response) {
         this._authorizationService.token(request, response);
+    }
 
     @Post()
-    login = (request: Request, response: Response) =>
+    @Authorize(Permissions.AUTH_LOGIN)
+    login(request: Request, response: Response) {
         this._authenticationService.login(request, response);
+    }
 
     @Post()
-    register = (request: Request, response: Response) => 
+    @Authorize(Permissions.AUTH_REGISTER)
+    register(request: Request, response: Response) {
         this._authenticationService.register(request, response);
+    } 
 }
 
 export default AuthController;

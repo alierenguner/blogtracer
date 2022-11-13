@@ -1,4 +1,5 @@
 import authorizationHelper from "@base/helpers/authorization-helper";
+import ResponseMessage from "@base/libs/response-message";
 import Roles from "@base/shared/roles";
 import getToken from "@base/utils/getToken";
 import isPermissionGranted from "@base/utils/isPermissionGranted";
@@ -12,7 +13,28 @@ class AuthorizationMiddleware {
         this._service = dependencies.services.authorization;
     }
 
-    public verify = (request: Request, response: Response, next: NextFunction) => {
+    public verify = async (request: Request, response: Response, next: NextFunction) => {
+        const tokenWithBearer = request.headers.authorization;
+        if (tokenWithBearer) {
+            await getToken(tokenWithBearer)
+                .then((token) => {
+                    const tokenData = authorizationHelper.decode(token); 
+
+                    if (tokenData) {
+                        request.headers.authorization = JSON.stringify(tokenData);
+                        
+                    } else {
+                        const responseMessage = new ResponseMessage(response);
+                        responseMessage.error({ message: 'Invalid token.' })    
+                    }
+
+                })
+                .catch(() => {
+                    const responseMessage = new ResponseMessage(response);
+                    responseMessage.error({ message: 'Invalid token.' })
+                });
+        }
+
         next();
         
         // let tokenWithBearer = request.headers.authorization;

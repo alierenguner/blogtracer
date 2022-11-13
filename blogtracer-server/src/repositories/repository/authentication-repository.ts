@@ -2,16 +2,18 @@ import AuthenticationLoginInputDto from "@base/dtos/AuthenticationLoginInputDto"
 import AuthenticationRegisterInputDto from "@base/dtos/AuthenticationRegisterInputDto";
 import UserFindOutputDto from "@base/dtos/UserFindOutputDto";
 import { IRepository } from "@base/shared/global";
+import { RoleModel } from "@models/roles/model";
 import { UserModel } from "@models/user/model";
+import { UserRoleModel } from "@models/user_roles/model";
 import { ModelCtor, Sequelize } from "sequelize";
 import { IRepositoryDependencies } from "../interfaces";
 
 export interface IAuthenticationRepository extends IRepository {
     login: (input: AuthenticationLoginInputDto) => Promise<AuthenticationLoginOutput>,
-    register: (input: AuthenticationRegisterInputDto) => Promise<boolean>
+    register: (input: AuthenticationRegisterInputDto) => Promise<any>
 }
 
-type AuthenticationLoginOutput = UserFindOutputDto | null;
+type AuthenticationLoginOutput = any | null;
 
 class AuthenticationRepository {
     private readonly _model;
@@ -22,44 +24,27 @@ class AuthenticationRepository {
     }
 
     public login = async (input: AuthenticationLoginInputDto): Promise<AuthenticationLoginOutput> => {
-        let result: AuthenticationLoginOutput = null;
-
-        const user = await this._model.findOne({
+        return this._model.findOne({
             where: Sequelize.and(
                 { password: input.password },
                 Sequelize.or(
                     { username: input.loginId },
                     { email: input.loginId }
-                )
+                ),
             ),
-            raw: true
+            include: [{
+                association: 'role',
+                through: {
+                    attributes: []
+                }
+            }],
+            raw: true,
+            nest: true,
         });
-
-        if (user) {
-            result = {
-                id: user.id,
-                email: user.email,
-                name: user.name,
-                profile: user.profile,
-                username: user.username
-            }
-        }
-
-        return result;
     }
 
-    public register = async (input: AuthenticationRegisterInputDto): Promise<boolean> => {
-        let result = false;
-
-        await this._model.create(input)
-            .then(() => {
-                result = true;
-            })
-            .catch((error) => { 
-                // error?.original?.code = "ER_DUP_ENTRY"
-            });
-
-        return result;
+    public register = async (input: AuthenticationRegisterInputDto): Promise<any> => {
+        return this._model.create(input);
     }
 }
 

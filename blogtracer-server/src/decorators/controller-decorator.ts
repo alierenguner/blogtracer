@@ -9,6 +9,8 @@ const controllerDecorator = (url: string) => (target: Function) => {
         }))   
     }
 
+
+    return <any>target;
 }
 
 export default controllerDecorator;

@@ -14,6 +14,8 @@ import Middlewares from '@base/middlewares';
 import swaggerUi from 'swagger-ui-express';
 import swaggerConfig from './config/swagger-config';
 import cors from 'cors';
+import generateId from '@base/utils/generateId';
+import Roles from '@base/shared/roles';
 
 class App {
     private readonly _express: express.Express;
@@ -37,13 +39,23 @@ class App {
         this.start();
     }
 
-
     /** Description: Initializes the database. */
     private databaseInit() {
         const mysqlClient = MySQLDatabase.getContext();
         sequelizeModelDefiner(mysqlClient, Object.values(modelDefiners));
 
         // mysqlClient.sync({ alter: true });
+        // mysqlClient.models.role.findOrCreate({ where: { id: process.env.USER_ROLE_ID }, defaults: { id: process.env.USER_ROLE_ID, name: Roles.USER }});
+        // mysqlClient.models.role.findOrCreate({ where: { id: process.env.CONTENT_CREATOR_ROLE_ID }, defaults: { id: process.env.CONTENT_CREATOR_ROLE_ID, name: Roles.CONTENT_CREATOR }});
+        // mysqlClient.models.role.findOrCreate({ where: { id: process.env.MODERATOR_ROLE_ID }, defaults: { id: process.env.MODERATOR_ROLE_ID, name: Roles.MODERATOR }});
+        // mysqlClient.models.role.findOrCreate({ where: { id: process.env.ADMIN_ROLE_ID }, defaults: { id: process.env.ADMIN_ROLE_ID, name: Roles.ADMIN }});
+        
+        // relationships
+        mysqlClient.models.user.belongsToMany(mysqlClient.models.role, { through: mysqlClient.models.user_role, foreignKey: 'user_id', as: 'role' });
+        mysqlClient.models.role.belongsToMany(mysqlClient.models.user, { through: mysqlClient.models.user_role, foreignKey: 'role_id' });
+        mysqlClient.models.user_role.belongsTo(mysqlClient.models.user, { foreignKey: 'user_id' } );
+        mysqlClient.models.user_role.belongsTo(mysqlClient.models.role, { foreignKey: 'role_id', as: 'role' } );
+        
         this._dbClients.mysqlClient = mysqlClient;
     }
 
@@ -75,8 +87,8 @@ class App {
         // dependent modules
         dependencies.repositories = new Repositories(dependencies);
         dependencies.services = new Services(dependencies);
-        dependencies.middlewares = new Middlewares(dependencies);
         dependencies.controllers = new Controllers(dependencies);
+        dependencies.middlewares = new Middlewares(dependencies);
         dependencies.router = new Router(dependencies);
 
         this._dependencies = dependencies;

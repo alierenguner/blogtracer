@@ -20,7 +20,7 @@ class UserController implements IUserController {
 
     @Post('/:userId')
     update(request: Request, response: Response) {
-
+        
     }
 
     @Delete('/:userId')

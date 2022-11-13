@@ -10,11 +10,13 @@ import AuthenticationRegisterInputDto from '@base/dtos/AuthenticationRegisterInp
 import AuthenticationManager from '@base/managers/authentication-manager';
 
 class AuthenticationService implements IService {
-    private _repository;
+    private _authRepository;
+    private _userRole;
     private _manager;
 
     constructor(dependencies: IServiceDependencies) {
-        this._repository = dependencies.repositories.authentication;
+        this._authRepository = dependencies.repositories.authentication;
+        this._userRole = dependencies.repositories.userRole;
         this._manager = new AuthenticationManager();
     }
 
@@ -31,39 +33,43 @@ class AuthenticationService implements IService {
 
         const inputValidation = this._manager.login(inputDto);
         if (inputValidation.isValid) {
-            const loginData = await this._repository.login(inputDto);
-            if (loginData) {
-                const { id, name, username, email } = loginData;
+            await this._authRepository.login(inputDto)
+                .then(async (loginData) => {
+                    const { id, name, username, email, role } = loginData;
 
-                // generate an access token
-                const accessToken = await authorizationHelper.sign({
-                    id,
-                    username,
-                    email,
-                    ipAddress: request.ip,
-                    role: Roles.USER,
-                });
+                    // generate an access token
+                    const accessToken = await authorizationHelper.sign({
+                        id,
+                        username,
+                        email,
+                        ipAddress: request.ip,
+                        role: role.name,
+                    });
+    
+                    result = {
+                        id,
+                        name,
+                        username,
+                        email,
+                        role: role.name,
+                        accessToken
+                    }
 
-                result = {
-                    id,
-                    name,
-                    username,
-                    email,
-                    accessToken,
-                    role: Roles.USER
-                }
-            }
-
-            responseMessage.success<AuthenticationLoginOutputDto>({
-                message: 'Successfully logged in.',
-                data: result
-            })
+                    responseMessage.success<AuthenticationLoginOutputDto>({
+                        message: 'Successfully logged in.',
+                        data: result
+                    })
+                })
+                .catch((error) => {
+                    responseMessage.error<AuthenticationLoginOutputDto>({
+                        message: inputValidation.message,
+                        statusCode: 400
+                    })
+                })
+           
 
         } else {
-            responseMessage.error<AuthenticationLoginOutputDto>({
-                message: inputValidation.message,
-                statusCode: 400
-            })
+            
         }
     }
 
@@ -80,17 +86,19 @@ class AuthenticationService implements IService {
 
         const inputValidation = this._manager.register(input);
         if (inputValidation.isValid) {
-            const isRegistered = await this._repository.register(input);
-            if (isRegistered) {
-                responseMessage.success({
-                    message: 'Successfully registered.'
-                })
+            await this._authRepository.register(input)
+                .then(async (registerData) => {
+                    await this._userRole.create({ role_id: process.env.USER_ROLE_ID,  user_id: registerData.id }) // todo: change role id source
 
-            } else {
-                responseMessage.error({
-                    message: 'Something went wrong.'
+                    responseMessage.success({
+                        message: 'Successfully registered.'
+                    })
                 })
-            }
+                .catch((error) => {
+                    responseMessage.error({
+                        message: 'Something went wrong.'
+                    })
+                });
 
         } else {
             responseMessage.error({

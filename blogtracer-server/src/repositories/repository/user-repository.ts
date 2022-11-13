@@ -43,7 +43,6 @@ class UserRepository extends BaseRepository {
         let result = false;
 
         const isSuccess = this._model.update({ active: false }, { where: { id } });
-        console.log(isSuccess); 
         if (isSuccess) {
             result = true;
         }

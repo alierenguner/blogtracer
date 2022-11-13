@@ -2,10 +2,10 @@ import appRoutes from "@base/app/config/routes"
 
 class RouteDecorators {
     /** Description: Creates the route decorators. */
-    private decoratorFactory = (requestMethod: string) => (methodUrl?: string) => (target: Object, propertyName: string, descriptor: PropertyDescriptor) => {
+    private decoratorFactory = (requestMethod: string) => (methodUrl?: string) => (target: any, propertyName: string, descriptor: PropertyDescriptor) => {
         const requestUrl = methodUrl !== undefined? methodUrl : `/${propertyName}`; 
         const controllerName = target.constructor.name;
-
+        
         if (!appRoutes[controllerName]) 
             appRoutes[controllerName] = [] 
 
@@ -15,6 +15,9 @@ class RouteDecorators {
             requestMethod, 
             requestUrl
         });
+
+        
+        return descriptor;
     }
 
     /** Description: Http Get Method */
