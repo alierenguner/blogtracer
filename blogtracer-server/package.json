@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Blogtracer API",
   "scripts": {
-    "start": "ts-node -r tsconfig-paths/register ./src/app/main.ts",
-    "dev": "nodemon ./src/app/main.ts"
+    "start": "ts-node -r tsconfig-paths/register ./src/blogtracer-webapi/index.ts",
+    "dev": "nodemon ./src/blogtracer-webapi/index.ts"
   },
   "author": "Ali Eren GUNER",
   "license": "ISC",
