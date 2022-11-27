@@ -1,8 +1,8 @@
 import express from 'express';
 import type expressTypes from 'express';
 import appConfig from './configurations/app-configuration';
-import logger from '@common/libs/logger';
 import IRootDependencies from '@core-shared/interfaces/dependencies/iroot-dependencies';
+import logger from '@common/libs/logger';
 // Operator Initiators
 import ControllerInitiator from "./operator-initiators/controller-initiator";
 import DatabaseInitiator from "./operator-initiators/database-initiator";

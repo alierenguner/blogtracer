@@ -1,9 +1,10 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import AuthMiddleware from "@web-api/middlewares/auth-middleware";
 import IMiddlewareDependencies from "@core-shared/interfaces/dependencies/imiddleware-dependencies";
 import IMiddlewares from "@common/operator-interfaces/imiddlewares";
+// Middlewares
+import AuthMiddleware from "@web-api/middlewares/auth-middleware";
 
 class MiddlewareInitiator implements IMiddlewares {
     private readonly _app;
