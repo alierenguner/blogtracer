@@ -1,6 +1,6 @@
-import PermissionScopes from "@common/enums/permission-scopes";
-import Permissions from "@common/enums/permissions";
-import Roles from "@common/enums/roles";
+import PermissionScopes from "@core-shared/enums/permission-scopes";
+import Permissions from "@core-shared/enums/permissions";
+import Roles from "@core-shared/enums/roles";
 
 class AuthOrganization {
     public readonly permissions = new Map();
@@ -30,7 +30,7 @@ class AuthOrganization {
             Permissions.Auth.REGISTER
         ];
 
-        this.permissions.set(Roles.NONE, guestPermissions);
+        this.permissions.set(Roles.GUEST, guestPermissions);
     }
 
     /** Description: User role permissions */

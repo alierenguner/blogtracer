@@ -1,9 +1,11 @@
 import express from "express";
-import IControllerDependencies from "@common/interfaces/icontroller-dependencies";
+import IControllerDependencies from "@core-shared/interfaces/dependencies/icontroller-dependencies";
 import IAuthController from "./abstract/iauth-controller";
-import { Controller, Post } from "@common/decorators";
+import { Authorize, Controller, Post } from "@common/decorators";
 import ResponseMessage from "@infrastructure/response-message";
-import Roles from "@common/enums/roles";
+import Roles from "@core-shared/enums/roles";
+import AuthenticationDtos from "@application/authentication/dtos";
+import Permissions from "@core-shared/enums/permissions";
 
 @Controller('/auth')
 class AuthController implements IAuthController {
@@ -16,6 +18,7 @@ class AuthController implements IAuthController {
     }
 
     @Post()
+    @Authorize(Permissions.Auth.TOKEN)
     async token(request: express.Request, response: express.Response) {
         const responseMessage = new ResponseMessage(response);
 
@@ -26,21 +29,46 @@ class AuthController implements IAuthController {
             ipAddress: request.ip,
             role: Roles.GUEST,
         })
-        .catch((error) => {
-            return responseMessage.error({ message: error }) 
-        })
+            .catch((error) => {
+                return responseMessage.error({ message: error })
+            })
 
         return responseMessage.success({ data: result });
     }
 
     @Post()
-    login(request: express.Request, response: express.Response) {
-        
+    @Authorize(Permissions.Auth.LOGIN)
+    async login(request: express.Request, response: express.Response) {
+        const requestBody = request.body;
+
+        const inputDto = new AuthenticationDtos.LoginInput({
+            ipAddress: request.ip,
+            loginId: requestBody.loginId,
+            password: requestBody.password
+        });
+
+        const responseMessage = new ResponseMessage(response);
+        this._authenticationService.login(inputDto)
+            .then((result) => responseMessage.success({ data: result }))
+            .catch((error) => responseMessage.error({ data: error }))
     }
 
     @Post()
+    @Authorize(Permissions.Auth.REGISTER)
     register(request: express.Request, response: express.Response) {
+        const requestBody = request.body;
 
+        const inputDto = new AuthenticationDtos.RegisterInput({
+            name: requestBody.name,
+            email: requestBody.email,
+            username: requestBody.username,
+            password: requestBody.password
+        })
+
+        const responseMessage = new ResponseMessage(response);
+        this._authenticationService.register(inputDto)
+            .then((result) => responseMessage.success({ data: result }))
+            .catch((error) => responseMessage.error({ data: error }))
     }
 }
 

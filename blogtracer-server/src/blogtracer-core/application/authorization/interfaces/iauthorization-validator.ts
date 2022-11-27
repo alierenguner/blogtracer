@@ -1,4 +1,4 @@
-import IValidator from "@/blogtracer-core/shared/interfaces/ivalidator";
+import IValidator from "@core-shared/interfaces/markups/ivalidator";
 
 interface IAuthorizationValidator extends IValidator {}
 export default IAuthorizationValidator;

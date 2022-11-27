@@ -1,7 +1,6 @@
-import IConfiguration from '@common/interfaces/iconfiguration';
 import dotenv from 'dotenv';
 
-class AppConfiguration implements IConfiguration {
+class AppConfiguration {
     public port: number;
     public jwtSecret: string;
     

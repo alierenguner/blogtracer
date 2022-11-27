@@ -1,4 +1,4 @@
-import IServiceDependencies from "@common/interfaces/iservice-dependencies";
+import IServiceDependencies from "@core-shared/interfaces/dependencies/iservice-dependencies";
 import jwt from "@infrastructure/jwt";
 import AuthorizationDtos from "./dtos";
 import IAuthorizationService from "./interfaces/iauthorization-service";

@@ -15,8 +15,8 @@ namespace AuthenticationDtos {
     export const RegisterInput = createDto<IAuthenticationRegisterInputDto>()
     export const RegisterOutput = createDto<IAuthenticationRegisterOutputDto>()
     // types
-    export type IRegisterInput = IAuthenticationLoginInputDto;
-    export type IRegisterOutput = IAuthenticationLoginOutputDto;
+    export type IRegisterInput = IAuthenticationRegisterInputDto;
+    export type IRegisterOutput = IAuthenticationRegisterOutputDto;
     // END REGISTER()
 }
 

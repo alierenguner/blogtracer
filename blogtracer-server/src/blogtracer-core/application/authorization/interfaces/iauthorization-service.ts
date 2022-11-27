@@ -1,4 +1,4 @@
-import IAppService from "@/blogtracer-core/shared/interfaces/iservice";
+import IAppService from "@core-shared/interfaces/markups/iservice";
 import AuthorizationDtos from "../dtos";
 
 interface IAuthorizationService extends IAppService {

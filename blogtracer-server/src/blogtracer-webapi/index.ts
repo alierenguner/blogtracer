@@ -1,14 +1,15 @@
 import express from 'express';
 import type expressTypes from 'express';
 import appConfig from './configurations/app-configuration';
-// Initiators
-import ControllerInitiator from "./initiators/controller-initiator";
-import DatabaseInitiator from "./initiators/database-initiator";
-import MiddlewareInitiator from "./initiators/middleware-initiator";
-import RepositoryInitiator from "./initiators/repository-initiator";
-import RouterInitiator from "./initiators/router-initiator";
-import ServiceInitiator from "./initiators/service-initiator";
-import IRootDependencies from '@common/interfaces/iroot-dependencies';
+import logger from '@common/libs/logger';
+import IRootDependencies from '@core-shared/interfaces/dependencies/iroot-dependencies';
+// Operator Initiators
+import ControllerInitiator from "./operator-initiators/controller-initiator";
+import DatabaseInitiator from "./operator-initiators/database-initiator";
+import MiddlewareInitiator from "./operator-initiators/middleware-initiator";
+import RepositoryInitiator from "./operator-initiators/repository-initiator";
+import RouterInitiator from "./operator-initiators/router-initiator";
+import ServiceInitiator from "./operator-initiators/service-initiator";
 
 class WebApi {
     private readonly _app: expressTypes.Express = express();
@@ -24,11 +25,10 @@ class WebApi {
 
         // independent classes
         dependencies.app = this._app, 
-        dependencies.config = appConfig,
         dependencies.dbClients = new DatabaseInitiator(),
-        dependencies.middlewares = new MiddlewareInitiator(),
-
+        
         // single dependent classes
+        dependencies.middlewares = new MiddlewareInitiator(dependencies),
         dependencies.repositories = new RepositoryInitiator(dependencies);
 
         // multi dependent classes 
@@ -43,7 +43,7 @@ class WebApi {
 
         if (this._app) {
             const listenerCallback = () => {
-                console.log('The server has been listening on http://localhost:' + port);
+                logger.success(`[SERVER] The server has been listening on http://localhost:${port}.`)
             }
 
             this._app.listen(port, listenerCallback);

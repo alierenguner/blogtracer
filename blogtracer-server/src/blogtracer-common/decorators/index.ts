@@ -21,4 +21,4 @@ export const Delete = routeDecorators.delete;
 
 // Authorize decorator
 /** Description: Checks the authorization controls of the method used. */
-// export const Authorize = authorizeDecorator;
+export const Authorize = authorizeDecorator;

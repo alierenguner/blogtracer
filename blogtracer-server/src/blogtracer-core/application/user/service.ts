@@ -1,4 +1,4 @@
-import IServiceDependencies from "@common/interfaces/iservice-dependencies";
+import IServiceDependencies from "@core-shared/interfaces/dependencies/iservice-dependencies";
 import IUserService from "./interfaces/iuser-service";
 import UserValidator from "./validator";
 

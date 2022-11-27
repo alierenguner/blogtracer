@@ -1,3 +1,4 @@
+/** Description: Creates a data transfer object class. */
 const createDto = <T = any>() => {
     class Dto {
         constructor(data?: T) {

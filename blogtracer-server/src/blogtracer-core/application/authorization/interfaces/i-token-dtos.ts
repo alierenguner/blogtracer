@@ -1,4 +1,4 @@
-import Roles from "@common/enums/roles";
+import Roles from "@core-shared/enums/roles";
 
 export interface IAuthorizationTokenInputDto {
     id: string,

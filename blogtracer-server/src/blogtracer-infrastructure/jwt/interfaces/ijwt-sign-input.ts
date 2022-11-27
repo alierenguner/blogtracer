@@ -1,4 +1,4 @@
-import Roles from "@common/enums/roles";
+import Roles from "@core-shared/enums/roles";
 
 interface IJWTSignInput {
     id?: string,
