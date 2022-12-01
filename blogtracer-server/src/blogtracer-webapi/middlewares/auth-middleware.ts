@@ -8,12 +8,13 @@ class AuthMiddleware implements IAuthMiddleware {
     /** Description: Verifies and decodes the JWT token. */
     token = (request: express.Request, response: express.Response, next: express.NextFunction) => {
         const tokenWithBearer = request.headers.authorization;
-
         if (tokenWithBearer) {
             const token = getToken(tokenWithBearer);
             if (token) {
+
                 const tokenData = jwt.decode(token);
     
+                
                 if (tokenData) {
                     request.headers.authorization = JSON.stringify(tokenData);
                     next();
@@ -27,9 +28,9 @@ class AuthMiddleware implements IAuthMiddleware {
             }
 
         } else {
+            request.headers.authorization = '{}';
             next();
         }
-
     }
 }
 

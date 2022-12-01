@@ -7,7 +7,7 @@ import authorizationExceptionHandler from "@web-api/exception-handlers/authoriza
 const authorizeDecorator = (permission: string) => (target: Object, propertyName: string, descriptor: TypedPropertyDescriptor<any>) => {
     const originalMethod = descriptor;
 
-    descriptor.value = new Proxy(target.constructor.prototype[propertyName], {
+    descriptor.value = new Proxy(descriptor.value, {
         apply(target, thisArg, argArray) {
             const [request, response] = argArray as [e.Request, e.Response];
 
@@ -22,10 +22,10 @@ const authorizeDecorator = (permission: string) => (target: Object, propertyName
             // check the user permissions
             const hasPermission = rolePermissions.some((rolePermission) => rolePermission === permission);
             if (hasPermission) {
-                return target.bind(thisArg)(...argArray);
+                return target.apply(thisArg, argArray);
 
             } else {
-                authorizationExceptionHandler.handleUnauthorizedException(response);
+                return authorizationExceptionHandler.handleUnauthorizedException(response);
             }
         },
     });

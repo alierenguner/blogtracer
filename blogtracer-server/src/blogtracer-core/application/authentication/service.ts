@@ -1,68 +1,72 @@
 import IServiceDependencies from "@core-shared/interfaces/dependencies/iservice-dependencies";
+import authenticationExceptionHandler from "@domain/authentication/exception-handler";
+import AuthenticationFailedException from "@domain/authentication/exceptions/authentication-failed-exception";
 import jwt from "@infrastructure/jwt";
 import AuthenticationDtos from "./dtos";
 import IAuthenticationService from "./interfaces/iauthentication-service";
+import AuthenticationValidator from "./validator";
 
 class AuthenticationService implements IAuthenticationService {
     private readonly _authenticationRepository;
+    private readonly _authenticationValidator;
     
     constructor(dependencies: IServiceDependencies) {
         this._authenticationRepository = dependencies.repositories.authentication;
+        this._authenticationValidator = new AuthenticationValidator();
     }
 
     public login = async (input: AuthenticationDtos.ILoginInput): Promise<AuthenticationDtos.ILoginOutput> => {
-        return new Promise((resolve, reject) => {
-            const handleRejected = (reason: any) => reject(reason);
-
-            this._authenticationRepository.login(input)
-            .then(async (response) => {
-                if (response) {
-                    const token = await jwt.sign({ 
-                        id: response.id,
-                        ipAddress: input.ipAddress,
-                        username: response.username,
-                        email: response.email,
-                        role: response.role.nam,
-                    })
+        const validation =  this._authenticationValidator.validateLogin(input);
+        if (validation.isValid) {
+            const response = await this._authenticationRepository.login(input);
+            if (response) {
+                // if login is approved
+                const token = await jwt.sign({ 
+                    id: response.id,
+                    ipAddress: input.ipAddress,
+                    username: response.username,
+                    email: response.email,
+                    role: response.role.nam,
+                })
     
-                    const result = new AuthenticationDtos.LoginOutput({
-                        id: response.id,
-                        name: response.name,
-                        username: response.username,
-                        email: response.email,
-                        role: response.role?.name,
-                        accessToken: token
-                    })
-    
-                    resolve(result);
+                return new AuthenticationDtos.LoginOutput({
+                    id: response.id,
+                    name: response.name,
+                    username: response.username,
+                    email: response.email,
+                    role: response.role?.name,
+                    accessToken: token
 
-                } else {
-                    handleRejected(response);
-                }
-                
-            }).catch(handleRejected)
+                });
+            } 
+            
+            throw new AuthenticationFailedException(); 
 
-        })
+        } 
+        
+        throw validation.exception;
     }
 
-    public register = (input: AuthenticationDtos.IRegisterInput): Promise<AuthenticationDtos.IRegisterOutput> => {
-        return new Promise((resolve, reject) => {
-            const handleRejected = (reason: any) => reject(reason);
-            
-            this._authenticationRepository.register(input)
-            .then(async (response) => {
+    public register = async (input: AuthenticationDtos.IRegisterInput): Promise<AuthenticationDtos.IRegisterOutput> => {
+        const validation = this._authenticationValidator.validateRegister(input);
+        if (validation.isValid) {
+            const response = await this._authenticationRepository.register(input)
+                .catch(authenticationExceptionHandler.handleException);
+
+            if (response) {
                 const { id, name, username } = response;
-                
-                const result = new AuthenticationDtos.RegisterOutput({
+    
+                return new AuthenticationDtos.RegisterOutput({
                     id,
                     name,
                     username
-                });
 
-                resolve(result);
-            })
-            .catch(handleRejected)
-        })
+                });;
+
+            } 
+        }
+        
+        throw validation.exception;
     }
 }
 

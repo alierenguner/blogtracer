@@ -30,6 +30,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
             }],
             raw: true,
             nest: true,
+            
         }) as any;
     }
 

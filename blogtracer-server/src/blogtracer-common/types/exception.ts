@@ -1,5 +1,6 @@
 type Exception = {
-    message: string,
+    name: string,
+    message: string | string[],
     statusCode: number
 }
 

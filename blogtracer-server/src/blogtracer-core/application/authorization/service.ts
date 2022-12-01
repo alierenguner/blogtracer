@@ -12,14 +12,15 @@ class AuthorizationService implements IAuthorizationService {
     }
 
     public token = async (input: AuthorizationDtos.ITokenInput): Promise<AuthorizationDtos.ITokenOutput> => {
-        const result = new AuthorizationDtos.TokenOutput();
+        const token = await jwt.sign(input)
+        if (token) {
+            const result = new AuthorizationDtos.TokenOutput({
+                accessToken: token                
 
-        await jwt.sign(input)
-        .then((token) => {
-            result.accessToken = token;
-        });
-        
-        return result; 
+            });
+
+            return result;
+        }
     }
 }
 
